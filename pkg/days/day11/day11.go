@@ -1,16 +1,14 @@
 package day11
 
 import (
-	"fmt"
+	"github.com/samallen659/advent_of_code/2021/pkg/utils"
 	"strconv"
 	"strings"
-
-	"github.com/samallen659/advent_of_code/2021/pkg/utils"
 )
 
 var input = utils.ReadInput("/inputs/day11/input1.txt")
 
-func Part1() {
+func Part1() int {
 	grid := buildGrid(input)
 	flashCount := 0
 	for i := 0; i < 100; i++ {
@@ -28,7 +26,32 @@ func Part1() {
 			}
 		}
 	}
-	fmt.Println(flashCount)
+	return flashCount
+}
+
+func Part2() int {
+	grid := buildGrid(input)
+	step := 0
+	var flashCount int
+	for flashCount < 100 {
+		step++
+		flashCount = 0
+		var flashedGrid [10][10]bool
+		for y := range grid {
+			for x := range grid[y] {
+				grid[y][x]++
+			}
+		}
+		for y := range grid {
+			for x := range grid[y] {
+				if grid[y][x] > 9 {
+					flash(&grid, y, x, &flashCount, &flashedGrid)
+				}
+			}
+		}
+	}
+
+	return step
 }
 
 func buildGrid(input string) [10][10]int {

@@ -50,6 +50,7 @@ func main() {
 		fmt.Printf("%d\n", day10.Part1())
 		fmt.Printf("%d\n", day10.Part2())
 	case "11":
-		day11.Part1()
+		fmt.Printf("%d\n", day11.Part1())
+		fmt.Printf("%d\n", day11.Part2())
 	}
 }
