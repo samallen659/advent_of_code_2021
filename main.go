@@ -2,9 +2,12 @@ package main
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/samallen659/advent_of_code/2021/pkg/days/day1"
 	"github.com/samallen659/advent_of_code/2021/pkg/days/day10"
 	"github.com/samallen659/advent_of_code/2021/pkg/days/day11"
+	"github.com/samallen659/advent_of_code/2021/pkg/days/day12"
 	"github.com/samallen659/advent_of_code/2021/pkg/days/day2"
 	"github.com/samallen659/advent_of_code/2021/pkg/days/day3"
 	"github.com/samallen659/advent_of_code/2021/pkg/days/day4"
@@ -13,7 +16,6 @@ import (
 	"github.com/samallen659/advent_of_code/2021/pkg/days/day7"
 	"github.com/samallen659/advent_of_code/2021/pkg/days/day8"
 	"github.com/samallen659/advent_of_code/2021/pkg/days/day9"
-	"os"
 )
 
 func main() {
@@ -52,5 +54,7 @@ func main() {
 	case "11":
 		fmt.Printf("%d\n", day11.Part1())
 		fmt.Printf("%d\n", day11.Part2())
+	case "12":
+		day12.Part1()
 	}
 }
