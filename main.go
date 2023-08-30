@@ -56,5 +56,6 @@ func main() {
 		fmt.Printf("%d\n", day11.Part2())
 	case "12":
 		fmt.Printf("%d\n", day12.Part1())
+		fmt.Printf("%d\n", day12.Part2())
 	}
 }
