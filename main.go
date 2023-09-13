@@ -8,6 +8,7 @@ import (
 	"github.com/samallen659/advent_of_code/2021/pkg/days/day12"
 	"github.com/samallen659/advent_of_code/2021/pkg/days/day13"
 	"github.com/samallen659/advent_of_code/2021/pkg/days/day14"
+	"github.com/samallen659/advent_of_code/2021/pkg/days/day15"
 	"github.com/samallen659/advent_of_code/2021/pkg/days/day2"
 	"github.com/samallen659/advent_of_code/2021/pkg/days/day3"
 	"github.com/samallen659/advent_of_code/2021/pkg/days/day4"
@@ -64,5 +65,7 @@ func main() {
 	case "14":
 		fmt.Printf("%d\n", day14.Part1())
 		fmt.Printf("%d\n", day14.Part2())
+	case "15":
+		day15.Part1()
 	}
 }
