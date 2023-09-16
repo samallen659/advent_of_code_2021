@@ -1,7 +1,7 @@
 package day15
 
 import (
-	"fmt"
+	"container/heap"
 	"math"
 	"strconv"
 	"strings"
@@ -12,49 +12,64 @@ import (
 var input = utils.ReadInput("/inputs/day15/input1.txt")
 var data = strings.Split(input, "\n")
 
-func Part1() {
+func Part1() int {
 	graph := buildGraph(data)
-	risk := lowestRiskPath(graph)
-	fmt.Println(risk)
+	risk := getRisk(graph)
+	return risk
 }
 
 func buildGraph(data []string) *[][]int {
-	n := len(data)
+	n, m := len(data), len(data[0])
 	graph := make([][]int, n)
 	for i := 0; i < n; i++ {
-		graph[i] = make([]int, len(data[0]))
-	}
-	for i, line := range data {
-		chars := strings.Split(line, "")
-		for j, char := range chars {
+		graph[i] = make([]int, m)
+		line := strings.Split(data[i], "")
+		for j, char := range line {
 			val, _ := strconv.Atoi(char)
 			graph[i][j] = val
 		}
 	}
-
 	return &graph
 }
 
-func lowestRiskPath(graph *[][]int) int {
+// dijkstra
+func getRisk(graph *[][]int) int {
 	n, m := len(*graph), len((*graph)[0])
 
-	dp := make([][]int, n)
+	dist := make(map[Node]int)
+	pq := make(PriorityQueue, n*m)
 	for i := 0; i < n; i++ {
-		dp[i] = make([]int, m)
-	}
-	dp[0][0] = 0
-	for i := 1; i < n; i++ {
-		dp[i][0] = dp[i-1][0] + (*graph)[i][0]
-	}
-	for i := 1; i < m; i++ {
-		dp[0][i] = dp[0][i-1] + (*graph)[0][i]
-	}
-
-	for i := 1; i < n; i++ {
-		for j := 1; j < len(dp[0]); j++ {
-			dp[i][j] = int(math.Min(float64(dp[i-1][j]), float64(dp[i][j-1]))) + (*graph)[i][j]
+		for j := 0; j < m; j++ {
+			tempNode := Node{y: i, x: j}
+			dist[tempNode] = math.MaxInt32
+			pq[i*m+j] = (&Item{
+				value:    tempNode,
+				priority: math.MaxInt32,
+				index:    i*m + j,
+			})
 		}
 	}
 
-	return dp[n-1][m-1]
+	heap.Init(&pq)
+	src := Node{y: 0, x: 0}
+	dist[src] = 0
+	pq.update(src, 0)
+	neighborNodes := []Node{{y: 0, x: 1}, {y: 0, x: -1}, {y: 1, x: 0}, {y: -1, x: 0}}
+
+	for len(pq) > 0 {
+		item := pq.Pop().(*Item)
+
+		for _, neighbor := range neighborNodes {
+			node := Node{y: neighbor.y + item.value.y, x: neighbor.x + item.value.x}
+			if node.y >= 0 && node.y < n && node.x >= 0 && node.x < m {
+				if dist[item.value]+(*graph)[node.y][node.x] <
+					dist[node] {
+					dist[node] = dist[item.value] + (*graph)[node.y][node.x]
+					pq.update(node, dist[node])
+				}
+			}
+		}
+	}
+
+	return dist[Node{y: n - 1, x: m - 1}]
 }

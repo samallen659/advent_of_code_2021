@@ -2,10 +2,16 @@ package day15
 
 import (
 	"container/heap"
+	"fmt"
 )
 
+type Node struct {
+	y int
+	x int
+}
+
 type Item struct {
-	value    string
+	value    Node
 	priority int
 	index    int
 }
@@ -34,15 +40,31 @@ func (pq *PriorityQueue) Push(x any) {
 func (pq *PriorityQueue) Pop() any {
 	old := *pq
 	n := len(old)
+	pq.Swap(0, n-1)
 	item := old[n-1]
 	old[n-1] = nil
-	item.index = 01
+	item.index = -1
 	*pq = old[0 : n-1]
+	heap.Fix(pq, 0)
 	return item
 }
 
-func (pq *PriorityQueue) update(item *Item, value string, priority int) {
-	item.value = value
+func (pq *PriorityQueue) updateByItem(item *Item, priority int) {
 	item.priority = priority
 	heap.Fix(pq, item.index)
+}
+
+func (pq *PriorityQueue) update(value Node, priority int) {
+	for _, qi := range *pq {
+		if qi.value == value {
+			pq.updateByItem(qi, priority)
+			return
+		}
+	}
+}
+
+func (pq *PriorityQueue) Print() {
+	for _, qi := range *pq {
+		fmt.Println(qi)
+	}
 }
