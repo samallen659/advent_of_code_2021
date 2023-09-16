@@ -18,6 +18,12 @@ func Part1() int {
 	return risk
 }
 
+func Part2() int {
+	graph := buildGraph2(data)
+	risk := getRisk(graph)
+	return risk
+}
+
 func buildGraph(data []string) *[][]int {
 	n, m := len(data), len(data[0])
 	graph := make([][]int, n)
@@ -26,6 +32,32 @@ func buildGraph(data []string) *[][]int {
 		line := strings.Split(data[i], "")
 		for j, char := range line {
 			val, _ := strconv.Atoi(char)
+			graph[i][j] = val
+		}
+	}
+	return &graph
+}
+
+func buildGraph2(data []string) *[][]int {
+	n, m := len(data), len(data[1])
+	graph := make([][]int, (n * 5))
+	iAddr := 0
+	for i := 0; i < (n * 5); i++ {
+		graph[i] = make([]int, (m * 5))
+		line := strings.Split(data[i%n], "")
+		if i > 0 && i%n == 0 {
+			iAddr++
+		}
+		jAddr := 0
+		for j := 0; j < (m * 5); j++ {
+			if j >= m && j%m == 0 {
+				jAddr++
+			}
+			val, _ := strconv.Atoi(line[j%m])
+			val = val + iAddr + jAddr
+			if val > 9 {
+				val = 0 + (val - 9)
+			}
 			graph[i][j] = val
 		}
 	}
